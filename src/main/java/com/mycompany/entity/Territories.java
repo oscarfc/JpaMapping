@@ -1,0 +1,116 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.mycompany.entity;
+
+import java.io.Serializable;
+import java.util.Collection;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+
+/**
+ *
+ * @author tss
+ */
+@Entity
+@Table(name = "Territories")
+@NamedQueries({
+    @NamedQuery(name = "Territories.findAll", query = "SELECT t FROM Territories t"),
+    @NamedQuery(name = "Territories.findByTerritoryID", query = "SELECT t FROM Territories t WHERE t.territoryID = :territoryID"),
+    @NamedQuery(name = "Territories.findByTerritoryDescription", query = "SELECT t FROM Territories t WHERE t.territoryDescription = :territoryDescription")})
+public class Territories implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @Column(name = "TerritoryID")
+    private String territoryID;
+    @Basic(optional = false)
+    @Column(name = "TerritoryDescription")
+    private String territoryDescription;
+    @ManyToMany(mappedBy = "territoriesCollection")
+    private Collection<Employees> employeesCollection;
+    @JoinColumn(name = "RegionID", referencedColumnName = "RegionID")
+    @ManyToOne(optional = false)
+    private Region regionID;
+
+    public Territories() {
+    }
+
+    public Territories(String territoryID) {
+        this.territoryID = territoryID;
+    }
+
+    public Territories(String territoryID, String territoryDescription) {
+        this.territoryID = territoryID;
+        this.territoryDescription = territoryDescription;
+    }
+
+    public String getTerritoryID() {
+        return territoryID;
+    }
+
+    public void setTerritoryID(String territoryID) {
+        this.territoryID = territoryID;
+    }
+
+    public String getTerritoryDescription() {
+        return territoryDescription;
+    }
+
+    public void setTerritoryDescription(String territoryDescription) {
+        this.territoryDescription = territoryDescription;
+    }
+
+    public Collection<Employees> getEmployeesCollection() {
+        return employeesCollection;
+    }
+
+    public void setEmployeesCollection(Collection<Employees> employeesCollection) {
+        this.employeesCollection = employeesCollection;
+    }
+
+    public Region getRegionID() {
+        return regionID;
+    }
+
+    public void setRegionID(Region regionID) {
+        this.regionID = regionID;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (territoryID != null ? territoryID.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Territories)) {
+            return false;
+        }
+        Territories other = (Territories) object;
+        if ((this.territoryID == null && other.territoryID != null) || (this.territoryID != null && !this.territoryID.equals(other.territoryID))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.mycompany.entity.Territories[ territoryID=" + territoryID + " ]";
+    }
+
+}
